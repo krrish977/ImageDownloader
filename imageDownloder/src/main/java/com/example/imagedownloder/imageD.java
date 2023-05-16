@@ -7,7 +7,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -25,10 +24,10 @@ public class imageD {
 
     public static void Downloader(Context context, Bitmap bitmap, String msg) {
         Uri uri = getImageUri(context, bitmap);
-        CaptureImage(uri, context);
+        CaptureImage(uri, context, msg);
     }
 
-    public static File CaptureImage(Uri uri, Context context) {
+    public static File CaptureImage(Uri uri, Context context, String msg) {
 
         c = context;
         Bitmap bitmap = null;
@@ -48,9 +47,7 @@ public class imageD {
 //            Log.e("Parent path:",ParentPath + "*");
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             Uri destination = Uri.fromFile(new File(ParentPath + "/" + timeStamp + ".jpg"));
-            Log.d("AQSWEWASDWQ", "CaptureImage: " + destination);
             String NewImagePath = destination.getPath();
-            Log.d("ASDFGHJKLASDFGHJ", "CaptureImage:NNNN " + NewImagePath);
 //            Log.e("New path:",NewImagePath + "*");
             //-----------------------------------------
             if (NewImagePath != null) {
@@ -61,7 +58,6 @@ public class imageD {
                     fo.write(bytes.toByteArray());
                     fo.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 //------------insert into media list----
@@ -70,7 +66,7 @@ public class imageD {
                 values.put(MediaStore.Images.Media.DATA, destination.getPath());
                 values.put(MediaStore.Images.Media.DATE_TAKEN, newfilee.lastModified());
                 scanPhoto(newfilee.getPath());
-                Toast.makeText(c, "Image saved successfully!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
                 Uri uri1;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     uri1 = FileProvider.getUriForFile(c.getApplicationContext(), c.getPackageName() + ".provider", newfilee);
@@ -92,12 +88,10 @@ public class imageD {
         msConn = new MediaScannerConnection(c, new MediaScannerConnection.MediaScannerConnectionClient() {
             public void onMediaScannerConnected() {
                 msConn.scanFile(imageFileName, null);
-                Log.i("msClient obj", "connection established");
             }
 
             public void onScanCompleted(String path, Uri uri) {
                 msConn.disconnect();
-                Log.i("msClient obj", "scan completed");
             }
         });
         msConn.connect();

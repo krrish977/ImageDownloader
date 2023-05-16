@@ -75,6 +75,8 @@ public class imageD {
                 }
                 c.getContentResolver().notifyChange(uri1, null);
 
+
+                
             }
         } catch (Exception e) {
         }

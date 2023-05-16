@@ -74,8 +74,7 @@ public class imageD {
                     uri1 = Uri.fromFile(newfilee);
                 }
                 c.getContentResolver().notifyChange(uri1, null);
-//                Utils.IsUpdate = true;
-//                ImageSliderActivity.list.add(0, NewImagePath);
+
             }
         } catch (Exception e) {
         }
